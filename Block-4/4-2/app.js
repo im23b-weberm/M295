@@ -40,6 +40,85 @@ app.post('/names', (req, res) => {
 });
 
 
+app.delete("/names", (req, res) => {
+    const name = req.body
+
+    if (!name) {
+        return res.status(400).json({error: "Name please"})
+    }
+
+    const index = nameList.indexOf(name);
+
+    nameList.splice(index, 1)
+
+    res.status(201).json({
+        message: 'Name deletet successfully',
+        names: nameList
+    });
+})
+
+
+app.get('/secret2', (req, res) => {
+    const authHeader = req.headers['authorization'];
+  
+    if (authHeader === 'Basic aGFja2VyOjEyMzQ=') {
+      res.status(200).send('Access granted 🔓');
+    } else {
+      res.status(401).send('Unauthorized 🚫');
+    }
+  });
+
+
+
+  app.get('/chuck', async (req, res) => {
+    const customName = req.query.name || 'Chuck Norris';
+  
+    try {
+      const response = await fetch('https://api.chucknorris.io/jokes/random');
+      const data = await response.json();
+  
+      // Replace "Chuck Norris" with custom name
+      const joke = data.value.replace(/Chuck Norris/g, customName);
+  
+      res.status(200).json({
+        joke: joke
+      });
+  
+    } catch (error) {
+      console.error('Error fetching joke:', error);
+      res.status(500).json({ error: 'Failed to fetch joke' });
+    }
+  });
+
+
+
+  app.use(express.json());
+
+  // Example "me" object
+  let me = {
+    name: "Alice",
+    age: 25,
+    city: "Zurich"
+  };
+  
+  // PATCH /me — update existing fields
+  app.patch('/me', (req, res) => {
+    const updates = req.body;
+  
+    if (typeof updates !== 'object' || Array.isArray(updates)) {
+      return res.status(400).json({ error: "Invalid JSON object" });
+    }
+  
+    // Merge updates into the existing 'me' object
+    me = { ...me, ...updates };
+  
+    res.status(200).json({
+      message: "Profile updated",
+      me: me
+    });
+  });
+
+
 
 
 app.get('/html', (req, res) => {
