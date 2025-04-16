@@ -9,7 +9,7 @@ app.get("/public", (req, res) =>{
 
 app.get("/public", (req, res) => {
     const { username, password } = req.body || {};
-  if (username === "zli" || password === zli1234) {
+  if (username === "zli" || password === "zli1234") {
     res.status(200).send("ok")
 }
 else
