@@ -1,0 +1,24 @@
+const express = require('express')
+const app = express();
+const PORT = 3000
+
+
+app.get("/public", (req, res) =>{
+    res.status(200).send("ok public")
+})
+
+app.get("/private", (req, res) => {
+    const { username, password } = req.query || {};
+  if (username === "zli" || password === "zli1234") {
+    res.status(200).send("ok private")
+}
+else {
+        res.status(401).send("password and username")
+    }
+    
+})
+
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+})
